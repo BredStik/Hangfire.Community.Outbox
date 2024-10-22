@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangfire.Community.Outbox", "Hangfire.Community.Outbox\Hangfire.Community.Outbox.csproj", "{BADFAE74-E280-424D-B2C9-9736AC9D82DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire.Community.Outbox.Tests", "Hangfire.Community.Outbox.Tests\Hangfire.Community.Outbox.Tests.csproj", "{32623A8C-8577-447E-9A6A-8AB5AC8DD0B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BADFAE74-E280-424D-B2C9-9736AC9D82DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BADFAE74-E280-424D-B2C9-9736AC9D82DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BADFAE74-E280-424D-B2C9-9736AC9D82DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32623A8C-8577-447E-9A6A-8AB5AC8DD0B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32623A8C-8577-447E-9A6A-8AB5AC8DD0B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32623A8C-8577-447E-9A6A-8AB5AC8DD0B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32623A8C-8577-447E-9A6A-8AB5AC8DD0B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,12 +11,14 @@ namespace Hangfire.Community.Outbox.Services;
 public class OutboxProcessor: IOutboxProcessor
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly IJobDeduplicator _jobDeduplicator;
     private readonly ILogger<OutboxProcessor> _logger;
     private readonly HangfireOutboxOptions _options;
 
-    public OutboxProcessor(IServiceScopeFactory serviceScopeFactory, ILogger<OutboxProcessor> logger, HangfireOutboxOptions options)
+    public OutboxProcessor(IServiceScopeFactory serviceScopeFactory, IJobDeduplicator jobDeduplicator, ILogger<OutboxProcessor> logger, HangfireOutboxOptions options)
     {
         _serviceScopeFactory = serviceScopeFactory;
+        _jobDeduplicator = jobDeduplicator;
         _logger = logger;
         _options = options;
     }
@@ -53,6 +55,16 @@ public class OutboxProcessor: IOutboxProcessor
             try
             {
                 _logger.LogDebug("Processing outbox job {id}", outboxMessage.Id);
+
+                if (_jobDeduplicator.TryGetProcessed(outboxMessage.Id, out var outboxJobInfo))
+                {
+                    _logger.LogDebug("Looks like outbox job {id} was already processed but its state was not updated.  Marking as processed.", outboxMessage.Id);
+
+                    outboxMessage.HangfireJobId = outboxJobInfo.HangfireJobId;
+                    outboxMessage.Processed = true;
+                    continue;
+                }
+
                 
                 var jobType = outboxMessage.GetJobType();
                 var job = new Job(jobType, outboxMessage.GetMethod(), outboxMessage.GetArguments().ToArray(), outboxMessage.Queue);
@@ -77,6 +89,8 @@ public class OutboxProcessor: IOutboxProcessor
 
                 outboxMessage.Processed = true;
                 outboxMessage.HangfireJobId = jobId;
+
+                _jobDeduplicator.MarkAsProcessed(new OutboxJobInfo(outboxMessage.Id, jobId));
                 
                 _logger.LogDebug("Successfully processed outbox job {id}", outboxMessage.Id);
             }

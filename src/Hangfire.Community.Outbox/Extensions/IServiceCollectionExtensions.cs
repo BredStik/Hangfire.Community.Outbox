@@ -22,6 +22,7 @@ public static class IServiceCollectionExtensions
 
         //SERVICE REGISTRATIONS
         serviceCollection.AddSingleton(outboxOptions);
+        serviceCollection.AddSingleton<IJobDeduplicator, JobDeduplicator>();
         serviceCollection.AddScoped<IDbContextAccessor>(sp =>
             new DbContextAccessor(sp.GetRequiredService<TDbContext>));
         serviceCollection.AddSingleton<IOutboxProcessor, OutboxProcessor>();
