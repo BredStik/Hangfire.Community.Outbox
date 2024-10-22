@@ -1,0 +1,14 @@
+actor User
+User->+Command handler: Command
+alt EF unit of work
+Command handler->Database:Save state
+Command handler->Database:Save outbox job(s)
+end
+Command handler->-User: OK
+loop
+Outbox processor->Database:Read outbox jobs
+activate Outbox processor
+Outbox processor->*Hangfire:Enqueue jobs
+Outbox processor->Database:Remove outbox jobs
+deactivate Outbox processor
+end

@@ -3,10 +3,10 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>1.0.1</AssemblyVersion>
+        <FileVersion>1.0.1</FileVersion>
         <PackageId>Hangfire.Community.Outbox</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <Authors>BredStik</Authors>
 		<RepositoryUrl>https://github.com/BredStik/Hangfire.Outbox</RepositoryUrl>
         <TargetFrameworks>net8.0;net6.0;net7.0</TargetFrameworks>

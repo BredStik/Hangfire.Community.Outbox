@@ -18,7 +18,7 @@ However, if your Hangfire's store is not RDMBS or your store's database is not t
 
 A classic example of the outbox pattern usage is sending an email as part of a business process.  Let's say we want to send an email to a customer as part of an order processing method, we would normally save some changes to our database and use Hangfire to schedule an email to the customer.  Most of the time, this works fine.  However, if the transaction that persists the application's state fails and/or rolls back, Hangfire would still send the email as its enqueuing was not persisted as part of the same transaction.  The project allows enqueuing job as outbox messages ensuring they will only be enqueued if the application's transaction succeeds.
 
-![Diagram](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=VUktPitDb21tYW5kIGhhbmRsZXI6IAAKBwphbHQgdHJhbnNhY3Rpb24KABoPLT5EYXRhYmFzZTpTYXZlIHN0YXRlAAUgb3V0Ym94IGpvYihzKQplbmQARBItVUk6IE9LCmxvb3AKTwAqBnByb2Nlc3NvAGkMUmVhZABFC3MKYWN0aXZhdGUgACUQADMTKkhhbmdmaXJlOkVucXVldWUAPQYAUh1tbwCBNA1zCmRlAFkaZW5k&s=roundgreen)
+![Diagram](https://raw.githubusercontent.com/BredStik/Hangfire.Community.Outbox/2ed5b4df772f15531d7d8197e8bc078a73630114/diagram.png)
 
 For a great explanation of what the outbox pattern is and what it tries to solve, please read these excellent blog posts from Derek Comartin and Milan Jovanović:
 
