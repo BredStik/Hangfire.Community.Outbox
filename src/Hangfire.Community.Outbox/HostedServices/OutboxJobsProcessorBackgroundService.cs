@@ -40,8 +40,8 @@ public class OutboxJobsProcessorBackgroundService: BackgroundService
                 }
                 catch (Exception exc)
                 {
-                    _logger.LogError(exc, "Could not obtain distributed lock");
                     //could not obtain lock
+                    _logger.LogWarning(exc, "Could not obtain distributed lock");
                 }
 
                 if (distributedLock == null && distributedLockSupported)
