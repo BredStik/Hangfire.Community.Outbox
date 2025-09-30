@@ -20,6 +20,7 @@ public class OutboxJobsCleanupJob
         _outboxOptions = outboxOptions;
     }
 
+    [DisableConcurrentExecution(timeoutInSeconds: 600)]
     public async Task CleanOldJobs(CancellationToken ct)
     {
         _logger.LogDebug("Cleaning old outbox jobs");
