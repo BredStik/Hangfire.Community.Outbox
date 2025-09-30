@@ -37,16 +37,16 @@ public class OutboxJobsCleanupJob
             query = query.Where(x => x.Exception == null);
         }
 
-#if NET8_0
-        var deletedCount = await query.ExecuteDeleteAsync(ct);
-#else
-        var toDelete = await query.ToArrayAsync(ct);
+        var toDelete = await query.Select(x => OutboxJob.BuildProxy(x.Id)).ToArrayAsync(ct);
         var deletedCount = toDelete.Length;
-        
-        dbContext.Set<OutboxJob>().RemoveRange(toDelete);
+
+        foreach (var job in toDelete)
+        {
+            dbContext.Entry(job).State = EntityState.Deleted;
+        }
 
         await dbContext.SaveChangesAsync(ct);
-#endif
+
         _logger.LogDebug("Deleted {deletedCount} outbox jobs older than {threshold}", deletedCount, threshold);
     }
 }

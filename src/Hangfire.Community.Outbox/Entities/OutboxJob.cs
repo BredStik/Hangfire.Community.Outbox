@@ -14,6 +14,22 @@ public class OutboxJob
 {
     private OutboxJob()
     { }
+    
+    private OutboxJob(long id)
+    {
+        Id = id;
+    }
+
+    /// <summary>
+    /// Builds an OutboxJob instance with only the Id populated.
+    /// Allows to delete using EF without loading all properties.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    internal static OutboxJob BuildProxy(long id)
+    {
+        return new OutboxJob(id);
+    }
 
     private static OutboxJob Build(Job job, string queue)
     {
