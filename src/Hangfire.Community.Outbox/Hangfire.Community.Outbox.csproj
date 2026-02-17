@@ -13,6 +13,13 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>Outbox pattern implementation for Hangfire using EntityFramework Core</Description>
+        <PackageReleaseNotes>
+            v1.2.0:
+            - Fix CancellationToken serialization
+            - Fix delete fails with ef9
+            - Added .NET 10 as target framework
+            - Simplified dependencies on EntityFrameworkCore
+        </PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
