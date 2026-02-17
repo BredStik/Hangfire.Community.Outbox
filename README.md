@@ -28,9 +28,7 @@ For a great explanation of what the outbox pattern is and what it tries to solve
 
 ## 2. Requirements
 1. Hangfire 1.8 or above
-2. .net 6 project with EntityFramework Core 6
-3. .net 7 project with EntityFramework Core 7
-4. .net 8 project with EntityFramework Core 8
+2. EntityFramework Core 6 or above
 
 ## 3. Installation
 ```
