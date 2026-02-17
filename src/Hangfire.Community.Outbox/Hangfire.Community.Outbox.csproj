@@ -3,13 +3,13 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
-        <FileVersion>1.1.0</FileVersion>
+        <AssemblyVersion>1.2.0</AssemblyVersion>
+        <FileVersion>1.2.0</FileVersion>
         <PackageId>Hangfire.Community.Outbox</PackageId>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <Authors>BredStik</Authors>
 		<RepositoryUrl>https://github.com/BredStik/Hangfire.Outbox</RepositoryUrl>
-        <TargetFrameworks>net8.0;net6.0;net7.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net8.0;net6.0</TargetFrameworks>
         <PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>Outbox pattern implementation for Hangfire using EntityFramework Core</Description>
@@ -17,24 +17,15 @@
 
     <ItemGroup>
         <PackageReference Include="Hangfire.Core" Version="1.8.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
     </ItemGroup>
     
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
-        <FrameworkReference Include="Microsoft.AspNetCore.App" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
         <FrameworkReference Include="Microsoft.AspNetCore.App" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" Version="10.0.0" Condition="'$(TargetFramework)' == 'net10.0'" />
     </ItemGroup>
     
     <ItemGroup>
