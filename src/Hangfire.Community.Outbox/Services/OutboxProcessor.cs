@@ -30,9 +30,9 @@ public class OutboxProcessor: IOutboxProcessor
         var backgroundJobClient = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
         
         var toProcess = await dbContext.Set<OutboxJob>()
-            .Take(_options.OutboxProcessorBatchSize)
             .Where(x => !x.Processed && x.Exception == null)
             .OrderBy(x => x.CreatedOn)
+            .Take(_options.OutboxProcessorBatchSize)
             .ToArrayAsync(ct);
 
         if (toProcess.Length == 0)
