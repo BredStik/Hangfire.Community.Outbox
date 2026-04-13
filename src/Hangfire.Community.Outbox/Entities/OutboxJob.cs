@@ -171,17 +171,18 @@ public class OutboxJob
         
         var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(ArgumentValuesJson));
         var element = JsonElement.ParseValue(ref reader);
-        var elements = element.EnumerateArray().ToList();
-
-        for (int i = 0; i < elements.Count(); i++)
+        var elements = element.EnumerateArray().ToArray();
+        
+        for (var i = 0; i < elements.Length; i++)
         {
-            if (types[i] == typeof(CancellationToken))
+            var targetType = types[i];
+            if (targetType == typeof(CancellationToken))
             {
                 yield return CancellationToken.None;
                 continue;
             }
 
-            yield return elements[i].Deserialize(types[i], SerializerOptions);
+            yield return elements[i].Deserialize(targetType, SerializerOptions);
         }
     }
 
