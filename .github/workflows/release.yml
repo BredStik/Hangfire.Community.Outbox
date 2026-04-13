@@ -19,6 +19,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Ensure tag points to master
+        run: |
+          git fetch origin master --depth=1
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/master
+
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
