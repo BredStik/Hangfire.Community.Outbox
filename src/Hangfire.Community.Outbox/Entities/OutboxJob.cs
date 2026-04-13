@@ -31,9 +31,14 @@ public class OutboxJob
         return new OutboxJob(id);
     }
 
+    private static readonly JsonSerializerOptions SerializerOptions = new()
+    {
+        IncludeFields = true
+    };
+    
     private static string SerializeArgs(IReadOnlyList<object> args)
     {
-        return JsonSerializer.Serialize(args.Select(a => a?.GetType() == typeof(CancellationToken) ? null : a));
+        return JsonSerializer.Serialize(args.Select(a => a?.GetType() == typeof(CancellationToken) ? null : a), SerializerOptions);
     }
     
     private static OutboxJob Build(Job job, string queue)
@@ -177,7 +182,7 @@ public class OutboxJob
                 continue;
             }
 
-            yield return elements[i].Deserialize(targetType);
+            yield return elements[i].Deserialize(targetType, SerializerOptions);
         }
     }
 
