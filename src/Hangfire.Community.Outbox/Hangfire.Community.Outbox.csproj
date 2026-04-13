@@ -3,10 +3,10 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyVersion>1.2.1</AssemblyVersion>
-        <FileVersion>1.2.1</FileVersion>
+        <AssemblyVersion>1.2.2</AssemblyVersion>
+        <FileVersion>1.2.2</FileVersion>
         <PackageId>Hangfire.Community.Outbox</PackageId>
-        <Version>1.2.1</Version>
+        <Version>1.2.2</Version>
         <Authors>bredstik</Authors>
 		<RepositoryUrl>https://github.com/BredStik/Hangfire.Community.Outbox</RepositoryUrl>
         <TargetFrameworks>net10.0;net8.0;net6.0</TargetFrameworks>
@@ -14,7 +14,7 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>Outbox pattern implementation for Hangfire using EntityFramework Core</Description>
         <PackageReleaseNotes>
-            v1.2.1
+            v1.2.2
             - Added support for ValueTuple arguments by enabling field serialization in OutboxJob JSON handling
             - Improved OutboxJob argument deserialization to avoid repeated enumeration during serialization/deserialization
             - Added unit test coverage for configuration, cleanup, outbox job handling, and outbox processing
