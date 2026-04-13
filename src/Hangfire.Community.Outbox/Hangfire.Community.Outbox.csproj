@@ -15,7 +15,10 @@
 		<Description>Outbox pattern implementation for Hangfire using EntityFramework Core</Description>
         <PackageReleaseNotes>
             v1.2.1
-            -             
+            - Improved OutboxJob argument deserialization to avoid repeated enumeration during serialization/deserialization
+            - Added unit test coverage for configuration, cleanup, outbox job handling, and outbox processing
+            - Updated package metadata and repository links, and upgraded Hangfire.Core to 1.8.23
+            - Added a GitHub Actions release workflow to build, test, pack, and publish the NuGet package
         </PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/BredStik/Hangfire.Community.Outbox</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.githubusercontent.com/BredStik/Hangfire.Community.Outbox/refs/heads/master/LICENSE</PackageLicenseUrl>
