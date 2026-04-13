@@ -21,7 +21,7 @@
             - Added a GitHub Actions release workflow to build, test, pack, and publish the NuGet package
         </PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/BredStik/Hangfire.Community.Outbox</PackageProjectUrl>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/BredStik/Hangfire.Community.Outbox/refs/heads/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
