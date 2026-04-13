@@ -3,27 +3,27 @@
     <PropertyGroup>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <AssemblyVersion>1.2.0</AssemblyVersion>
-        <FileVersion>1.2.0</FileVersion>
+        <AssemblyVersion>1.2.1</AssemblyVersion>
+        <FileVersion>1.2.1</FileVersion>
         <PackageId>Hangfire.Community.Outbox</PackageId>
-        <Version>1.2.0</Version>
-        <Authors>BredStik</Authors>
-		<RepositoryUrl>https://github.com/BredStik/Hangfire.Outbox</RepositoryUrl>
+        <Version>1.2.1</Version>
+        <Authors>bredstik</Authors>
+		<RepositoryUrl>https://github.com/BredStik/Hangfire.Community.Outbox</RepositoryUrl>
         <TargetFrameworks>net10.0;net8.0;net6.0</TargetFrameworks>
         <PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>Outbox pattern implementation for Hangfire using EntityFramework Core</Description>
         <PackageReleaseNotes>
-            v1.2.0:
-            - Fix CancellationToken serialization
-            - Fix delete fails with ef9
-            - Added .NET 10 as target framework
-            - Simplified dependencies on EntityFrameworkCore
+            v1.2.1
+            -             
         </PackageReleaseNotes>
+        <PackageProjectUrl>https://github.com/BredStik/Hangfire.Community.Outbox</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/BredStik/Hangfire.Community.Outbox/refs/heads/master/LICENSE</PackageLicenseUrl>
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Hangfire.Core" Version="1.8.0" />
+        <PackageReference Include="Hangfire.Core" Version="1.8.23" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
