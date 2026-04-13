@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   publish:
@@ -61,6 +62,12 @@ jobs:
       - name: Pack NuGet package
         run: dotnet pack src/Hangfire.Community.Outbox/Hangfire.Community.Outbox.csproj --configuration Release --no-build -p:ContinuousIntegrationBuild=true -p:PackageVersion=${{ steps.version.outputs.package_version }} --output ${{ github.workspace }}/artifacts
 
+      - name: Log in to NuGet.org
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: bredstik
+
       - name: Publish package to NuGet.org
         shell: pwsh
         run: |
@@ -71,5 +78,5 @@ jobs:
           }
 
           foreach ($package in $packages) {
-            dotnet nuget push $package.FullName --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push $package.FullName --api-key '${{ steps.nuget-login.outputs.NUGET_API_KEY }}' --source https://api.nuget.org/v3/index.json --skip-duplicate
           }
