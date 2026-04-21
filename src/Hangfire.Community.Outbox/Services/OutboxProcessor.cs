@@ -21,14 +21,17 @@ public class OutboxProcessor: IOutboxProcessor
         _options = options;
     }
     
+    private const int ChunkSize = 100;
+    private const int MaxDegreeOfParallelism = 16;
+
     public async Task Process(CancellationToken ct)
     {
         using var scope = _serviceScopeFactory.CreateScope();
         var dbContextAccessor = scope.ServiceProvider.GetRequiredService<IDbContextAccessor>();
         await using var dbContext = dbContextAccessor.GetDbContext();
-        
+
         var backgroundJobClient = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
-        
+
         var toProcess = await dbContext.Set<OutboxJob>()
             .Where(x => !x.Processed && x.Exception == null)
             .OrderBy(x => x.CreatedOn)
@@ -39,56 +42,58 @@ public class OutboxProcessor: IOutboxProcessor
         {
             return;
         }
-        
+
         _logger.LogDebug("Processing {nbJobs} outbox jobs", toProcess.Length);
-        
-        foreach (var outboxMessage in toProcess)
+
+        var parallelOptions = new ParallelOptions
         {
-            if (ct.IsCancellationRequested)
-            {
-                _logger.LogDebug("Cancellation requested");
-                return;
-            }
-            
-            try
-            {
-                _logger.LogDebug("Processing outbox job {id}", outboxMessage.Id);
-                
-                var jobType = outboxMessage.GetJobType();
-                var job = new Job(jobType, outboxMessage.GetMethod(), outboxMessage.GetArguments().ToArray(), outboxMessage.Queue);
+            MaxDegreeOfParallelism = MaxDegreeOfParallelism,
+            CancellationToken = ct,
+        };
 
-                string jobId = null;
-                
-                if (outboxMessage.EnqueueAt.HasValue)
+        foreach (var chunk in toProcess.Chunk(ChunkSize))
+        {
+            await Parallel.ForEachAsync(chunk, parallelOptions, (outboxMessage, _) =>
+            {
+                try
                 {
-                    //schedule for specified date
-                    jobId = backgroundJobClient.Create(job, new ScheduledState(outboxMessage.EnqueueAt.Value.DateTime));
+                    var jobType = outboxMessage.GetJobType();
+                    var job = new Job(jobType, outboxMessage.GetMethod(), outboxMessage.GetArguments().ToArray(), outboxMessage.Queue);
+
+                    string jobId;
+
+                    if (outboxMessage.EnqueueAt.HasValue)
+                    {
+                        //schedule for specified date
+                        jobId = backgroundJobClient.Create(job, new ScheduledState(outboxMessage.EnqueueAt.Value.DateTime));
+                    }
+                    else if (outboxMessage.Delay.HasValue)
+                    {
+                        //schedule for specified delay
+                        jobId = backgroundJobClient.Create(job, new ScheduledState(outboxMessage.Delay.Value));
+                    }
+                    else
+                    {
+                        //enqueue now
+                        jobId = backgroundJobClient.Create(job, new EnqueuedState(outboxMessage.Queue));
+                    }
+
+                    outboxMessage.Processed = true;
+                    outboxMessage.HangfireJobId = jobId;
                 }
-                else if (outboxMessage.Delay.HasValue)
+                catch (Exception e)
                 {
-                    //schedule for specified delay
-                    jobId = backgroundJobClient.Create(job, new ScheduledState(outboxMessage.Delay.Value));
-                }
-                else
-                {
-                    //enqueue now
-                    jobId = backgroundJobClient.Create(job, new EnqueuedState(outboxMessage.Queue));
+                    _logger.LogError(e, "Unable to process outbox job {id}", outboxMessage.Id);
+                    outboxMessage.Exception = e.ToString();
                 }
 
-                outboxMessage.Processed = true;
-                outboxMessage.HangfireJobId = jobId;
-                
-                _logger.LogDebug("Successfully processed outbox job {id}", outboxMessage.Id);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Unable to process outbox job {id}", outboxMessage.Id);
-                outboxMessage.Exception = e.ToString();
-            }
+                return ValueTask.CompletedTask;
+            });
+
+            // Persist per chunk so a SaveChanges failure loses at most ChunkSize
+            // rows of "marked processed" state rather than the whole batch.
+            await dbContext.SaveChangesAsync(ct);
         }
-
-        _logger.LogDebug("Persisting outbox job changes");
-        await dbContext.SaveChangesAsync(ct);
     }
 }
 
